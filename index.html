@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ATCH Stock Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<header>
+  <div>
+      <div class="logo">ATCH</div>
+          <div class="sub">Stock Analysis</div>
+            </div>
+
+              <button id="refreshBtn">↻</button>
+              </header>
+
+              <main>
+
+              <section class="searchBox">
+                <input id="searchInput" placeholder="날짜 검색 예: 2026-09">
+                  <button id="searchBtn">검색</button>
+                  </section>
+
+                  <section class="priceCard">
+
+                    <div class="label">현재가</div>
+
+                      <div id="currentPrice" class="price">-</div>
+
+                        <div id="priceChange" class="change">-</div>
+
+                        </section>
+
+                        <section class="periodBox">
+
+                          <button data-period="30">30일</button>
+
+                            <button data-period="60">60일</button>
+
+                              <button data-period="all" class="active">전체</button>
+
+                              </section>
+
+                              <section class="cards">
+
+                                <div class="card">
+                                    <span>7일 예상</span>
+                                        <strong id="pred7">-</strong>
+                                          </div>
+
+                                            <div class="card">
+                                                <span>30일 예상</span>
+                                                    <strong id="pred30">-</strong>
+                                                      </div>
+
+                                                        <div class="card">
+                                                            <span>투자 신호</span>
+                                                                <strong id="signal">-</strong>
+                                                                  </div>
+
+                                                                    <div class="card">
+                                                                        <span>RSI</span>
+                                                                            <strong id="rsi">-</strong>
+                                                                              </div>
+
+                                                                                <div class="card">
+                                                                                    <span>거래량</span>
+                                                                                        <strong id="volume">-</strong>
+                                                                                          </div>
+
+                                                                                            <div class="card">
+                                                                                                <span>변동성</span>
+                                                                                                    <strong id="volatility">-</strong>
+                                                                                                      </div>
+
+                                                                                                      </section>
+
+
+                                                                                                      <!-- ⭐ 실제 주가 그래프 -->
+
+                                                                                                      <section class="panel pricePanel">
+
+                                                                                                        <div class="chartTitle">
+                                                                                                            <div>
+                                                                                                                  <h2>주가 그래프</h2>
+                                                                                                                        <p>날짜별 종가</p>
+                                                                                                                            </div>
+                                                                                                                              </div>
+
+                                                                                                                                <div class="chartBox">
+                                                                                                                                    <canvas id="priceChart"></canvas>
+                                                                                                                                      </div>
+
+                                                                                                                                      </section>
+
+
+                                                                                                                                      <!-- 예상가격 -->
+
+                                                                                                                                      <section class="panel">
+
+                                                                                                                                        <h2>예상 가격</h2>
+
+                                                                                                                                          <div class="chartBox">
+                                                                                                                                              <canvas id="forecastChart"></canvas>
+                                                                                                                                                </div>
+
+                                                                                                                                                </section>
+
+
+                                                                                                                                                <!-- 거래량 -->
+
+                                                                                                                                                <section class="panel">
+
+                                                                                                                                                  <h2>거래량</h2>
+
+                                                                                                                                                    <div class="chartBox">
+                                                                                                                                                        <canvas id="volumeChart"></canvas>
+                                                                                                                                                          </div>
+
+                                                                                                                                                          </section>
+
+
+                                                                                                                                                          <section class="analysis">
+
+                                                                                                                                                            <h2>AI 분석</h2>
+
+                                                                                                                                                              <div id="analysisText">
+                                                                                                                                                                  데이터를 분석하고 있습니다...
+                                                                                                                                                                    </div>
+
+                                                                                                                                                                    </section>
+
+
+                                                                                                                                                                    <section class="indicators">
+
+                                                                                                                                                                      <div>
+                                                                                                                                                                          <span>MA20</span>
+                                                                                                                                                                              <b id="ma20">-</b>
+                                                                                                                                                                                </div>
+
+                                                                                                                                                                                  <div>
+                                                                                                                                                                                      <span>MA60</span>
+                                                                                                                                                                                          <b id="ma60">-</b>
+                                                                                                                                                                                            </div>
+
+                                                                                                                                                                                              <div>
+                                                                                                                                                                                                  <span>MACD</span>
+                                                                                                                                                                                                      <b id="macd">-</b>
+                                                                                                                                                                                                        </div>
+
+                                                                                                                                                                                                          <div>
+                                                                                                                                                                                                              <span>스토캐스틱</span>
+                                                                                                                                                                                                                  <b id="stoch">-</b>
+                                                                                                                                                                                                                    </div>
+
+                                                                                                                                                                                                                      <div>
+                                                                                                                                                                                                                          <span>최근 고가</span>
+                                                                                                                                                                                                                              <b id="high">-</b>
+                                                                                                                                                                                                                                </div>
+
+                                                                                                                                                                                                                                  <div>
+                                                                                                                                                                                                                                      <span>최근 저가</span>
+                                                                                                                                                                                                                                          <b id="low">-</b>
+                                                                                                                                                                                                                                            </div>
+
+                                                                                                                                                                                                                                            </section>
+
+
+                                                                                                                                                                                                                                            <section class="dataInfo">
+
+                                                                                                                                                                                                                                              <div>
+                                                                                                                                                                                                                                                  데이터 수
+                                                                                                                                                                                                                                                      <b id="count">-</b>
+                                                                                                                                                                                                                                                        </div>
+
+                                                                                                                                                                                                                                                          <div>
+                                                                                                                                                                                                                                                              시작일
+                                                                                                                                                                                                                                                                  <b id="startDate">-</b>
+                                                                                                                                                                                                                                                                    </div>
+
+                                                                                                                                                                                                                                                                      <div>
+                                                                                                                                                                                                                                                                          종료일
+                                                                                                                                                                                                                                                                              <b id="endDate">-</b>
+                                                                                                                                                                                                                                                                                </div>
+
+                                                                                                                                                                                                                                                                                  <div>
+                                                                                                                                                                                                                                                                                      상태
+                                                                                                                                                                                                                                                                                          <b id="status">로딩 중</b>
+                                                                                                                                                                                                                                                                                            </div>
+
+                                                                                                                                                                                                                                                                                            </section>
+
+                                                                                                                                                                                                                                                                                            </main>
+
+
+                                                                                                                                                                                                                                                                                            <nav>
+
+                                                                                                                                                                                                                                                                                              <button onclick="scrollToTop()">
+                                                                                                                                                                                                                                                                                                  🏠<br>홈
+                                                                                                                                                                                                                                                                                                    </button>
+
+                                                                                                                                                                                                                                                                                                      <button onclick="focusChart()">
+                                                                                                                                                                                                                                                                                                          📈<br>주가
+                                                                                                                                                                                                                                                                                                            </button>
+
+                                                                                                                                                                                                                                                                                                              <button onclick="focusAnalysis()">
+                                                                                                                                                                                                                                                                                                                  🤖<br>분석
+                                                                                                                                                                                                                                                                                                                    </button>
+
+                                                                                                                                                                                                                                                                                                                      <button onclick="refreshData()">
+                                                                                                                                                                                                                                                                                                                          🔄<br>새로고침
+                                                                                                                                                                                                                                                                                                                            </button>
+
+                                                                                                                                                                                                                                                                                                                            </nav>
+
+
+                                                                                                                                                                                                                                                                                                                            <script src="app.js"></script>
+
+                                                                                                                                                                                                                                                                                                                            </body>
+                                                                                                                                                                                                                                                                                                                            </html>
